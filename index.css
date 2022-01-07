@@ -27,7 +27,6 @@
 
 .grid {
     max-width: 1270px;
-    height: 500px;
     display: flex;
     justify-content: center;
     margin : 0 auto;
@@ -58,7 +57,6 @@
 }
 
 .grid div[id^='placeBox']:hover {
-    position: absolute;
     transform: scale(1.06);
     transition: transform 300ms ease-in-out;
     display: inline-block;
