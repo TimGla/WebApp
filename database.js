@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getFirestore, collection, addDoc, query, orderBy, startAfter, limit, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { where, getFirestore, collection, addDoc, query, orderBy, startAfter, limit, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 // alphabay522szl32u4ci5e3iokdsyth56ei7rwngr2wm7i5jo54j2eid.onion
 // http://whilgmoqcvjwefe6ubspypiusclukp5dhanl7b7hlz3g6st75r4jvzqd.onion/
 const firebaseConfig = {
@@ -60,6 +60,9 @@ async function fetchPlaces() {
 }
 
 async function drawPlaces(docSnaps) {
+    if ($(".mansory").length) {
+        $(".mansory").remove();
+    }
     const placesContainer = document.getElementById('placesContainer');
     docSnaps.forEach((doc) => {
         const data = doc.data();
@@ -74,22 +77,69 @@ async function drawPlaces(docSnaps) {
         $('.grid').append(content);
     });
 
-    $('body').append("<script class='masonry' src='https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js'></script>")
+    $('body').append("<script class='mansory' src='https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js'></script>")
+}
+
+let lastCitySearchFetch;
+let lastTitleSearchFetch;
+let searchMode = false;
+let searchItem;
+
+async function search() {
+    searchMode = true;
+    searchItem = document.getElementById('search').value;
+    const cityQuery = query(collection(db, "places"), where("location.city", "==", searchItem), orderBy("position.latitude"), limit(10));
+    const titleQuery = query(collection(db, "places"), where("title", "==", searchItem), orderBy("position.latitude"), limit(10));
+
+    const citySnaps = await getDocs(cityQuery);
+    const titleSnaps = await getDocs(titleQuery);
+    lastCitySearchFetch = (citySnaps.docs.length >= 10) ? citySnaps.docs[citySnaps.docs.length - 1] : null;
+    lastTitleSearchFetch = (titleSnaps.docs.length >= 10) ? titleSnaps.docs[titleSnaps.docs.length - 1] : null;
+    $(".grid").empty();
+    if (citySnaps.docs.length === 0 && titleSnaps.docs.length === 0) {
+        $('#placesContainer').append("<div class='d-flex justify-content-center m-4 fw-bold opacity-50'>Sorry, no results found :(</div>");
+        return
+    }
+    drawPlaces(citySnaps);
+    drawPlaces(titleSnaps);
+
 }
 
 $(window).scroll(async function() {   
     if($(window).scrollTop() + $(window).height() == $(document).height()) {
-        if (lastFetched != null) {
-            const batch = query(collection(db, "places"), orderBy("position.latitude"), startAfter(lastFetched), limit(10));
-            const docSnaps = await getDocs(batch);
-            lastFetched = docSnaps.docs[docSnaps.docs.length - 1];
-            if (docSnaps.docs.length < 10) {
-                lastFetched = null;
+        if(!searchMode) {
+            if (lastFetched != null) {
+                const batch = query(collection(db, "places"), orderBy("position.latitude"), startAfter(lastFetched), limit(10));
+                const docSnaps = await getDocs(batch);
+                lastFetched = (docSnaps.docs.length >= 10) ? docSnaps.docs[docSnaps.docs.length - 1] : null;
+                await drawPlaces(docSnaps);
             }
-            await drawPlaces(docSnaps);
+        } else {
+            if (lastCitySearchFetch != null) {
+                const batch = query(collection(db, "places"), orderBy("position.latitude"), startAfter(lastCitySearchFetch), limit(10));
+                const docSnaps = await getDocs(batch);
+                lastCitySearchFetch = (docSnaps.docs.length >= 10) ? docSnaps.docs[docSnaps.docs.length - 1] : null;
+                await drawPlaces(docSnaps);
+            } else if (lastTitleSearchFetch != null) {
+                const batch = query(collection(db, "places"), orderBy("position.latitude"), startAfter(lastTitleSearchFetch), limit(10));
+                const docSnaps = await getDocs(batch);
+                lastTitleSearchFetch = (docSnaps.docs.length >= 10) ? docSnaps.docs[docSnaps.docs.length - 1] : null;
+                await drawPlaces(docSnaps);
+            }
         }
     }
  });
 
+ $("#logo").on('click', () => {
+     searchMode = false;
+     $(".grid").empty();
+     fetchPlaces();
+ });
+
+document.getElementById('search').addEventListener('keyup', (event) => {
+    if (event.key === 'Enter') {
+        search();
+    }
+});
 document.getElementById('submitButton').addEventListener('click', addNewPlaceToDatabase);
 document.addEventListener("DOMContentLoaded", fetchPlaces);
