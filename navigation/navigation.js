@@ -1,5 +1,5 @@
   const circle = document.querySelector(".circle");
-  const startBtn = document.querySelector(".start-btn");
+  const startBtn = document.querySelector("#searchButton");
 
   let pointDegree;
   let distance; // In metres
@@ -11,18 +11,38 @@
   }
 
   function startSearch() {
-    DeviceOrientationEvent.requestPermission()
+    $('#searchButton').hide();
+    $('#distance').addClass('m-5');
+    
+    try {
+      DeviceOrientationEvent.requestPermission()
       .then((response) => {
         if (response === "granted") {
           window.addEventListener("deviceorientation", handler, true);
         } else {
-          alert("has to be allowed!");
+          alert("Sensors must be allowed");
+          window.location.href = "../index.html";
         }
-       }).catch(() => alert("not supported"));
+       }).catch(() => {
+        alert("not supported");
+        window.location.href = "../index.html";
+       });
+    } catch (error) {
+      alert('Soemthing went wrong. Please try again later');
+      window.location.href = "../index.html";
+    }
 
-      if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(locationHandler);
-      }
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(locationHandler, (error) => {
+        if (error.code === 1) {
+          alert("Sensors must be allowed");
+          window.location.href = "../index.html";
+        }
+      });
+    } else {
+      alert('Geolocation is not supported by this browser');
+      window.location.href = "../index.html";
+    }
   }
 
   function handler(e) {

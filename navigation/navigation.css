@@ -2,7 +2,6 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: black;
   }
 
   #container {
@@ -19,8 +18,8 @@ body {
   .circle {
     position: absolute;
     width: 65%;
-    height: 65%;
-    top: 44%;
+    height: 65%; /* Sonst 44% */
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     transition: transform 0.1s ease-out;
@@ -30,17 +29,13 @@ body {
     
   }
 
-  .start-btn {
-    width:20%;
-    margin-left:40%;
-    margin-right:40%;
-    height: 50px;
-    border-radius: 30%;
-
-    background-color: aquamarine;
+  #searchButton {
+    font-size: 120%;
   }
 
+
   #distance {
+    margin-top: -5vh;
     color: white;
     text-align: center;
     font-family: Arial, Helvetica;

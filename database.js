@@ -129,7 +129,7 @@ $(window).scroll(async function() {
     }
  });
 
- $(document).on('click','.grid-item', async (e) => {
+ $(document).on('dblclick','.grid-item', async (e) => {
     const preId = ($(e.target).is("div")) ? e.target.id : $(e.target).parent()[0].id; 
     const id = preId.substring(8);
     const docRef = doc(db, "places", id);
@@ -138,7 +138,6 @@ $(window).scroll(async function() {
     if (docSnap.exists()) {
         const data = docSnap.data();
         localStorage.setItem("position", JSON.stringify(data.position));
-        alert(data.position.latitude);
         window.location.href = "/navigation/navigation.html";
     } else {
         alert('Something went wrong. Please try again later')
