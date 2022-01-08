@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { where, getFirestore, collection, addDoc, query, orderBy, startAfter, limit, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-// alphabay522szl32u4ci5e3iokdsyth56ei7rwngr2wm7i5jo54j2eid.onion
-// http://whilgmoqcvjwefe6ubspypiusclukp5dhanl7b7hlz3g6st75r4jvzqd.onion/
+import { where, getFirestore, collection, addDoc, query, orderBy, startAfter, limit, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyC_eW7eTE1AHliZ77omfFV2W4hkfRdezw4",
   authDomain: "secretplaces-a21bf.firebaseapp.com",
@@ -127,6 +126,22 @@ $(window).scroll(async function() {
                 await drawPlaces(docSnaps);
             }
         }
+    }
+ });
+
+ $(document).on('click','.grid-item', async (e) => {
+    const preId = ($(e.target).is("div")) ? e.target.id : $(e.target).parent()[0].id; 
+    const id = preId.substring(8);
+    const docRef = doc(db, "places", id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        const data = docSnap.data();
+        localStorage.setItem("position", JSON.stringify(data.position));
+        alert(data.position.latitude);
+        window.location.href = "/navigation/navigation.html";
+    } else {
+        alert('Something went wrong. Please try again later')
     }
  });
 

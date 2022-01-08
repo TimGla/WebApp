@@ -3,13 +3,11 @@
 
   let pointDegree;
   let distance; // In metres
-  let point = { // Point of destination
-    lat: 50.961630,
-    lng: 6.929471
-  };
+  let point;
 
   function init() {
     startBtn.addEventListener("click", startSearch);
+    point = JSON.parse(localStorage.getItem("position"));
   }
 
   function startSearch() {
@@ -58,8 +56,8 @@
   }
 
   function calcDegreeToPoint(latitude, longitude) {
-    const phiK = (point.lat * Math.PI) / 180.0;
-    const lambdaK = (point.lng * Math.PI) / 180.0;
+    const phiK = (point.latitude * Math.PI) / 180.0;
+    const lambdaK = (point.longitude * Math.PI) / 180.0;
     const phi = (latitude * Math.PI) / 180.0;
     const lambda = (longitude * Math.PI) / 180.0;
     const psi =
@@ -74,10 +72,10 @@
 
   function calcDistanceToPoint(latitude, longitude) {
     const r = 6371 * 1000;
-    const psi1 = point.lat * Math.PI / 180.0;
+    const psi1 = point.latitude * Math.PI / 180.0;
     const psi2 = latitude * Math.PI / 180.0;
-    const deltaPsi = (latitude - point.lat) * Math.PI / 180.0;
-    const deltaLambda = (longitude - point.lng) * Math.PI / 180.0;
+    const deltaPsi = (latitude - point.latitude) * Math.PI / 180.0;
+    const deltaLambda = (longitude - point.longitude) * Math.PI / 180.0;
 
     const a = Math.sin(deltaPsi/2) * Math.sin(deltaPsi/2) + Math.cos(psi1) * Math.cos(psi2) * Math.sin(deltaLambda/2) * Math.sin(deltaLambda/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
@@ -85,4 +83,4 @@
     return Math.round(r * c);
   }
 
-  init();
+  document.addEventListener("DOMContentLoaded", init);
