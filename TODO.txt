@@ -1,5 +1,4 @@
 Responsive Design:
-- Beim Resizig grid-container so groß machen, dass elemnte immer centered sind
 - Search bar verschwinden lassen und durch lupe ersetzen, die suchfeld aufplopen lässt, wenn angecklickt
 
 Animation:

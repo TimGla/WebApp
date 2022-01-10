@@ -11,25 +11,28 @@
   <body>
     
     <nav id="navbar" class="navbar sticky-top navbar-expand-sm py-1 navbar-light">
-        <a href="#" class="w-25 p-3 navbar-brand mb-0 h1">
+        <a href="#" id="logoContainer" class="w-25 p-3 navbar-brand mb-0 h1">
             <span id="logo" class="text-large">SecretPlaces</span>
         </a>
+        
         <div id="searchContainer" class="w-50 p-3 input-group">
+            <img id="searchIcon" src="https://img.icons8.com/pastel-glyph/64/000000/search--v1.png"/>
             <input id="search" class="form-control border rounded-pill" type="search" placeholder="Search for city or title">
         </div>
-        <div class="w-25 p-3">
+        <div id="buttonContainer" class="w-25 p-3">
+          
             <button data-modal-target="#addPlacePopup" id="addPlaceButton" class="form-control border rounded-pill text-white bg-dark">Add Place</button>
         </div>
     </nav>
 
 
     <div class="addPlacePopup" id="addPlacePopup">
-      <div class="d-flex justify-content-between">
-        <span class="m-2 h1 fw-bold">Adding Place</span>
-        <button data-close-button class="btn-close m-3" aria-label="Close"></button>
+      <div id="popupTitleContainer" class="d-flex justify-content-between">
+        <span id="popupTitle"class="m-2 h1 fw-bold">Adding Place</span>
+        <button id="popupClose" data-close-button class="btn-close m-3" aria-label="Close"></button>
       </div>
 
-      <hr class="line">
+      <hr id="firstLine" class="line">
 
       <div class="form-group m-2">
         <label for="titleInput" class="fw-bold m-1">Titel</label>
@@ -65,7 +68,7 @@
         <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Nice church right next to the main station"></textarea>
       </div>
 
-      <div class="d-flex justify-content-end">
+      <div id="popupButtonContainer" class="d-flex justify-content-end">
         <button id="submitButton" class="form-control border rounded-pill text-white bg-dark m-2">Submit</button>
       </div>
     </div>

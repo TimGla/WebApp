@@ -41,6 +41,10 @@
     opacity: 1;
 }
 
+#searchIcon {
+    display: none;
+}
+
 
 
 
@@ -96,4 +100,105 @@
 #overlay.active {
     opacity: 1;
     pointer-events: all;
+}
+
+@media only screen and (max-width: 750px) {
+    #search {
+      display: none;
+    }
+
+    #searchContainer {
+        display: flex;
+        justify-content: flex-start;
+        max-width: 2.5rem !important;
+        margin-left: auto;
+        margin-right: .5rem;
+    }
+
+    #navbar {
+        display: flex !important;
+        justify-content: space-between !important;
+    }
+
+    #buttonContainer {
+        min-width: 140px;
+        max-height: 70;
+        justify-content: flex-end;
+    }
+
+    #popupTitle , #firstLine {
+        display: none;
+    }
+
+    #popupClose {
+        margin-top: .5rem !important;
+        margin-bottom: -2.5rem !important;
+    }
+
+    .line {
+        margin-left: 0.25rem;
+        margin-right: 0.25rem;
+        margin-top: -0.25rem;
+        margin-bottom: -0.25rem;
+    }
+
+    #popupTitleContainer {
+        justify-content: flex-end !important;
+    }
+
+    #popupButtonContainer {
+        margin-top: -.75rem !important;
+        margin-bottom: -.25rem !important;
+    }
+
+    #searchIcon {
+        display: block;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    #searchIcon {
+        cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 1450px) {
+    .grid {
+        width: 950px;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .grid {
+        width: 635px;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .grid {
+        width: 317px;
+    }
+}
+
+
+@media only screen and (max-width: 400px) {
+    .text-large {
+        font-size: 120%;
+        margin-left: .25rem;
+    }
+
+    #searchIcon {
+        display: block;
+        width: 2rem;
+        height: 2rem;
+    }
+
+    #navbar {
+        height:70px;
+    }
+
+    #addPlaceButton {
+        height: 2.3rem;
+        text-align-last: center;
+    }
 }
