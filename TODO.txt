@@ -1,5 +1,2 @@
-Responsive Design:
-- Search bar verschwinden lassen und durch lupe ersetzen, die suchfeld aufplopen lässt, wenn angecklickt
-
 Animation:
 - Kleine Animation wenn man nah genug am Zielort ist
