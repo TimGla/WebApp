@@ -51,7 +51,7 @@ async function addNewPlaceToDatabase() {
 let lastFetched = null;
 
 async function fetchPlaces() {
-    const batch = query(collection(db, "places"), orderBy("position.latitude"), limit(10));
+    const batch = query(collection(db, "places"), orderBy("position.latitude"), limit(25));
     const docSnaps = await getDocs(batch);
     lastFetched = docSnaps.docs[docSnaps.docs.length - 1];
     await drawPlaces(docSnaps);
@@ -86,13 +86,13 @@ let searchItem;
 
 async function search(searchItem) {
     searchMode = true;
-    const cityQuery = query(collection(db, "places"), where("location.city", "==", searchItem), orderBy("position.latitude"), limit(10));
-    const titleQuery = query(collection(db, "places"), where("title", "==", searchItem), orderBy("position.latitude"), limit(10));
+    const cityQuery = query(collection(db, "places"), where("location.city", "==", searchItem), orderBy("position.latitude"), limit(25));
+    const titleQuery = query(collection(db, "places"), where("title", "==", searchItem), orderBy("position.latitude"), limit(25));
 
     const citySnaps = await getDocs(cityQuery);
     const titleSnaps = await getDocs(titleQuery);
-    lastCitySearchFetch = (citySnaps.docs.length >= 10) ? citySnaps.docs[citySnaps.docs.length - 1] : null;
-    lastTitleSearchFetch = (titleSnaps.docs.length >= 10) ? titleSnaps.docs[titleSnaps.docs.length - 1] : null;
+    lastCitySearchFetch = (citySnaps.docs.length >= 25) ? citySnaps.docs[citySnaps.docs.length - 1] : null;
+    lastTitleSearchFetch = (titleSnaps.docs.length >= 25) ? titleSnaps.docs[titleSnaps.docs.length - 1] : null;
     $(".grid").empty();
     if (citySnaps.docs.length === 0 && titleSnaps.docs.length === 0) {
         $('#placesContainer').append("<div class='d-flex justify-content-center m-4 fw-bold opacity-50'>Sorry, no results found :(</div>");
@@ -107,21 +107,21 @@ $(window).scroll(async function() {
     if($(window).scrollTop() + $(window).height() == $(document).height()) {
         if(!searchMode) {
             if (lastFetched != null) {
-                const batch = query(collection(db, "places"), orderBy("position.latitude"), startAfter(lastFetched), limit(10));
+                const batch = query(collection(db, "places"), orderBy("position.latitude"), startAfter(lastFetched), limit(25));
                 const docSnaps = await getDocs(batch);
-                lastFetched = (docSnaps.docs.length >= 10) ? docSnaps.docs[docSnaps.docs.length - 1] : null;
+                lastFetched = (docSnaps.docs.length >= 25) ? docSnaps.docs[docSnaps.docs.length - 1] : null;
                 await drawPlaces(docSnaps);
             }
         } else {
             if (lastCitySearchFetch != null) {
-                const batch = query(collection(db, "places"), orderBy("position.latitude"), startAfter(lastCitySearchFetch), limit(10));
+                const batch = query(collection(db, "places"), orderBy("position.latitude"), startAfter(lastCitySearchFetch), limit(25));
                 const docSnaps = await getDocs(batch);
-                lastCitySearchFetch = (docSnaps.docs.length >= 10) ? docSnaps.docs[docSnaps.docs.length - 1] : null;
+                lastCitySearchFetch = (docSnaps.docs.length >= 25) ? docSnaps.docs[docSnaps.docs.length - 1] : null;
                 await drawPlaces(docSnaps);
             } else if (lastTitleSearchFetch != null) {
-                const batch = query(collection(db, "places"), orderBy("position.latitude"), startAfter(lastTitleSearchFetch), limit(10));
+                const batch = query(collection(db, "places"), orderBy("position.latitude"), startAfter(lastTitleSearchFetch), limit(25));
                 const docSnaps = await getDocs(batch);
-                lastTitleSearchFetch = (docSnaps.docs.length >= 10) ? docSnaps.docs[docSnaps.docs.length - 1] : null;
+                lastTitleSearchFetch = (docSnaps.docs.length >= 25) ? docSnaps.docs[docSnaps.docs.length - 1] : null;
                 await drawPlaces(docSnaps);
             }
         }

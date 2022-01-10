@@ -21,27 +21,27 @@
           window.addEventListener("deviceorientation", handler, true);
         } else {
           alert("Sensors must be allowed");
-          window.location.href = "../index.html";
+          window.location.href = "../";
         }
        }).catch(() => {
         alert("not supported");
-        window.location.href = "../index.html";
+        window.location.href = "../";
        });
     } catch (error) {
       alert('Soemthing went wrong. Please try again later');
-      window.location.href = "../index.html";
+      window.location.href = "../";
     }
 
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(locationHandler, (error) => {
         if (error.code === 1) {
           alert("Sensors must be allowed");
-          window.location.href = "../index.html";
+          window.location.href = "../";
         }
       });
     } else {
       alert('Geolocation is not supported by this browser');
-      window.location.href = "../index.html";
+      window.location.href = "../";
     }
   }
 
