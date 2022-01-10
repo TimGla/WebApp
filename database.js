@@ -84,9 +84,8 @@ let lastTitleSearchFetch;
 let searchMode = false;
 let searchItem;
 
-async function search() {
+async function search(searchItem) {
     searchMode = true;
-    searchItem = document.getElementById('search').value;
     const cityQuery = query(collection(db, "places"), where("location.city", "==", searchItem), orderBy("position.latitude"), limit(10));
     const titleQuery = query(collection(db, "places"), where("title", "==", searchItem), orderBy("position.latitude"), limit(10));
 
@@ -150,9 +149,22 @@ $(window).scroll(async function() {
      fetchPlaces();
  });
 
+ $('#searchIcon').on('click', () => {
+    $('#hiddenSearchbar').toggle();
+    $('#hiddenSearch').toggle();
+});
+
+$('#hiddenSearch').on('keyup', (event) => {
+    if (event.key === 'Enter') {
+        console.log("Clicked enter");
+        search($('#hiddenSearch').val());
+    }
+});
+
+
 document.getElementById('search').addEventListener('keyup', (event) => {
     if (event.key === 'Enter') {
-        search();
+        search(document.getElementById('search').value);
     }
 });
 document.getElementById('submitButton').addEventListener('click', addNewPlaceToDatabase);
