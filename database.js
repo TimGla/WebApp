@@ -137,7 +137,7 @@ $(window).scroll(async function() {
     if (docSnap.exists()) {
         const data = docSnap.data();
         localStorage.setItem("position", JSON.stringify(data.position));
-        window.location.href = "/navigation/navigation.html";
+        window.location.href += "navigation/navigation.html";
     } else {
         alert('Something went wrong. Please try again later')
     }
